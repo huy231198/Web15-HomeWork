@@ -1,0 +1,32 @@
+.menu1 {
+    background: #D5B0AC;
+    font-weight: bold;
+    color: #402E2A;
+    text-align:center;
+    height: 30px;
+    line-height: 30px;
+}
+.menu1 > span{
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+}
+span:hover {
+    color: #FFFFFF;
+    background: #9CD08F;
+    cursor: pointer;
+}
+.menu2{
+    background: #D5B0AC;
+    width: 100px;
+    font-weight: bold;
+    color: #402E2A;
+    text-align:center; 
+    line-height: 30px;
+}
+.menu2 > span{
+    border: 1px solid #FFFFFF;
+    display: block;
+    width: 100px;
+    height: 30px;
+}
