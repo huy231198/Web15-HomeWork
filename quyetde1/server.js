@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const app = express();
 const questionList = require('./questions.json');
+let questionRandom;
 
 
 app.use(bodyParser.urlencoded({ extended: false }
@@ -38,12 +39,9 @@ app.post('/createquestion', (req, res) => {
 });
 
 app.get('/randomquestion', (req, res) => {
-    let questionList = JSON.parse(fs.readFileSync('./questions.json'));
-
-    if (questionList.length > 0) {
-        let randomIndex = Math.floor(Math.random() * questionList.length);
-        let questionRandom = questionList[randomIndex];
-        res.send(questionRandom);
+    if(questionList.length > 0){
+        questionRandom = questionList[Math.floor(Math.random()*questionList.length)];
+        res.send(questionRandom); 
     }
 });
 
