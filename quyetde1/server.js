@@ -1,10 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-const app = express();
-const questionList = require('./questions.json');
-let questionRandom;
 
+const moongoose = require('mongoose');
+
+const QuestionModel = require('./models/questionModel')
+
+moongoose.connect("mongodb://localhost/quyetde1", (err) => {
+    if (err) console.log(err);
+    else console.log("DB connect success")
+});
+
+const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }
 ));
@@ -18,48 +25,62 @@ app.get('/ask', (req, res) => {
 app.get('/answer', (req, res) => {
     res.sendFile(__dirname + '/public/answer.html')
 });
-app.get('/vote', (req, res) => {
-    res.sendFile(__dirname + '/public/vote.html')
-});
 
 app.post('/createquestion', (req, res) => {
-    let questionList = JSON.parse(fs.readFileSync('./questions.json'));
-    const newQuestion = {
-        id: questionList.length,
-        questionContent: req.body.questionContent,
-        yes: 0,
-        no: 0
-    };
 
-    questionList.push(newQuestion);
-
-    fs.writeFileSync('./questions.json', JSON.stringify(questionList));
-
-    res.redirect('/answer');
+    QuestionModel.create({
+        questionContent: req.body.questionContent
+    },
+        (err, questionCreated) => {
+            if (err) console.log(err)
+            else res.redirect('/question/' + questionCreated._id);
+        });
 });
 
 app.get('/randomquestion', (req, res) => {
-    if(questionList.length > 0){
-        questionRandom = questionList[Math.floor(Math.random()*questionList.length)];
-        res.send(questionRandom); 
-    }
-});
+    // let questionList = JSON.parse(fs.readFileSync('./questions.json'));
+    // if (questionList.length > 0) {
+    //     questionRandom = questionList[Math.floor(Math.random() * questionList.length)];
+    //     res.send(questionRandom);
+    // }
+    QuestionModel.count({}, (err, count) => {
+        let randomNum = Math.floor(Math.random() * count);
 
-app.get('/voteQuest', (req, res) => {
-    if (questionList.length > 0) {
-        let voteQuest = questionRandom;
-        res.send(voteQuest);
-    }
+        QuestionModel.findOne({}, null, { skip: randomNum }, (err, questionFound) => {
+            if (err) console.log(err)
+            else res.send(questionFound);
+        })
+    })
 });
 
 app.post('/answer', (req, res) => {
     const { questionid, answer } = req.body;
-    // const questionid = req.body.questionid;
-    // const answer = req.body.answer;
-    let questionList = JSON.parse(fs.readFileSync('./questions.json'));
-    questionList[questionid][answer] += 1;
-    fs.writeFileSync('./questions.json', JSON.stringify(questionList));
-    res.send({ success: 1 });
+    QuestionModel.findById(questionid, (err, questionFound) => {
+        if (err) console.log(err)
+        else if (!questionFound) console.log("Not found")
+        else {
+            questionFound[answer] += 1;
+            questionFound.save((err, questionUpdated) => {
+                if (err) console.log(err)
+                else res.send({ success: 1 });
+            })
+        }
+    })
+});
+
+app.get('/question/:questionId', (req, res) => {
+    res.sendFile(__dirname + "/public/vote.html");
+});
+
+app.get('/questiondetail/:questionId', (req, res) => {
+    // let questionList = JSON.parse(fs.readFileSync('./questions.json'));
+    let questionId = req.params.questionId;
+    // res.send({ success: 1, question: questionList[questionId] });
+    QuestionModel.findById(questionId, (err, questionFound) => {
+        if (err) console.log(err)
+        else if (!questionFound) console.log("Not found 1")
+        else res.send({ success: 1, question: questionFound });
+    })
 });
 
 app.use(express.static('public'));

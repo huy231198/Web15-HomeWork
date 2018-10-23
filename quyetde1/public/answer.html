@@ -1,30 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Đáp gọn</title>
 </head>
 
 <body>
-    <nav>
-        <ul>
-            <li><a href="/ask">Hỏi nhanh</a></li>
-            <li><a href="/answer">Đáp gọn</a></li>
-        </ul>
-    </nav>
-    <div>
-        <h1 id="questionContent"></h1>
-        <button class="answer_btn" data-questionId="" data-answer="yes">Đúng/Có/Phải</button>
-        <button class="answer_btn" data-questionId="" data-answer="no">Sai/Không/Trái</button>
-        <button id="otherQuestion">Xem câu hỏi khác</button>
-        <button id="voteResult">Xem kết quả</button>
-    </div>
 
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Yolo~~</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/ask">Hỏi nhanh</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/answer">Đáp gọn</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="container mt-5">
+        <h1 class="text-center" id="questionContent"></h1>
+        <div class="row text-center  mt-5">
+            <div class="col-md-6">
+                <button class="answer_btn  btn-primary btn-lg" data-questionid="" data-answer="yes"> <span class="glyphicon glyphicon-thumbs-up"></span>
+                    Đúng/Có/Phải</button>
+            </div>
+            <div class="col-md-6">
+                <button class="answer_btn  btn-danger btn-lg" data-questionid="" data-answer="no"> <span class="glyphicon glyphicon-thumbs-down"></span>
+                    Sai/Không/Trái</button>
+            </div>
+        </div>
+        <div class=" mt-5 d-flex justify-content-center">
+            <button id="otherQuestion" type="submit" class=" btn btn-default btn-outline-dark " name="btn_yesno" value="cauhoikhac">Câu
+                hỏi
+                khác</button>
+            <div class="col-md-auto">
+            </div>
+            <a id="viewDetail" href="#"><button type="submit" class="  btn btn-default btn-outline-dark" name="btn_yesno"
+                    value="ketquavote">Kết
+                    quả vote</button></a>
+        </div>
+    </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
     <script src="/main.js"></script>
 </body>
 

@@ -1,31 +1,24 @@
-$.ajax({
-    url: 'http://localhost:1124/voteQuest',
-    type: "GET",
-    success: function (response) {
-        if (response) {
-            let totalVote = response.yes + response.no;
-            $("#totalvote").text(totalVote);
-            $("#voteYes").text(response.yes / totalVote * 100);
-            $("#voteNo").text(response.no / totalVote * 100);
-            $("#questvote").text(response.questionContent);
-        }
-    },
-    error: function (err) {
-        console.log(err);
-    }
-})
-
-$('#otherQuestion').on("click", function () {
-    $.ajax({
-        url: 'http://localhost:1124/vote',
-        type: 'GET',
-        success: function (response) {
-            if (response) {
-                window.location.href = "/answer";
-            }
-        },
-        error: function (err) {
-            console.log(err);
-        }
-    })
+const params = new URL(window.location.href).pathname.split("/");
+const questionId = params[params.length - 1];
+ $.ajax({
+	type: "GET",
+	url: "/questiondetail/"+questionId,
+	success: function(response) {
+		if(response && response.success) {
+			let question = response.question;
+			let totalVote = question.yes + question.no;
+			let voteYes = ((question.yes/totalVote)*100).toFixed(2);
+			let voteNo = ((question.no/totalVote)*100).toFixed(2);
+			
+			$('#questionContent').text(question.questionContent);
+			$('#totalVote span').text(totalVote);
+			$('#voteYes span').text(totalVote != 0 ? parseFloat(voteYes) : 0);
+			$('#voteNo span').text(totalVote != 0 ? parseFloat(voteNo) : 0);
+			document.getElementById("percentYes").style.width = voteYes+"%";
+			document.getElementById("percentNo").style.width = voteNo +"%";
+		}
+	},
+	error: function(error) {
+		console.log(error);
+	}
 });
