@@ -10,6 +10,7 @@ mongoose.connect("mongodb://localhost/techkids-hotgirl")
 
 app.use(bodyParser.urlencoded({ extended: true }
 ));
+app.use(bodyParser.json());
 
 app.use("/api/users", UserRouter);
 app.use("/api/images", ImageRouter);
